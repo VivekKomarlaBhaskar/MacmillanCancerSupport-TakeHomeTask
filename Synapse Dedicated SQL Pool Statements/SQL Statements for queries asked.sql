@@ -13,6 +13,8 @@ SELECT
 FROM MacmillanCancerSupport_Test.factCancerRegistrations f
 JOIN MacmillanCancerSupport_Test.dimRegion r 
     ON f.regionKey = r.regionKey
+    AND f.reportDate >= r.startDate 
+    AND r.endDate IS NULL
 JOIN LatestReport lr 
     ON f.reportDate = lr.maxReportDate
 GROUP BY r.regionName
@@ -39,8 +41,12 @@ SELECT Top 3
 FROM MacmillanCancerSupport_Test.factCancerRegistrations f
 JOIN MacmillanCancerSupport_Test.dimICD i 
     ON f.icdKey = i.icdKey
+    AND f.reportDate >= i.startDate 
+    AND i.endDate IS NULL
 JOIN MacmillanCancerSupport_Test.dimRegion r 
     ON f.regionKey = r.regionKey
+    AND f.reportDate >= r.startDate 
+    AND r.endDate IS NULL
 JOIN MacmillanCancerSupport_Test.dimGender g 
     ON f.genderKey = g.genderKey
 JOIN LatestReport lr 
@@ -50,7 +56,6 @@ WHERE
     AND g.sex = 'Female'
 GROUP BY i.icdDescription
 ORDER BY totalIncidence DESC;
-
 /*
 Explanation:
 
@@ -77,8 +82,12 @@ SELECT
 FROM MacmillanCancerSupport_Test.factCancerRegistrations f
 JOIN MacmillanCancerSupport_Test.dimICD i 
     ON f.icdKey = i.icdKey
+    AND f.reportDate >= i.startDate 
+    AND i.endDate IS NULL
 JOIN MacmillanCancerSupport_Test.dimRegion r 
     ON f.regionKey = r.regionKey
+    AND f.reportDate >= r.startDate 
+    AND r.endDate IS NULL
 JOIN LatestReport lr 
     ON f.reportDate = lr.maxReportDate
 WHERE r.regionName IN ('North East', 'South West')
